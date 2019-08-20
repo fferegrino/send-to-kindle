@@ -29,5 +29,5 @@ steps:
 
 - script: |
     export PATH=$HOME/.local/bin:$PATH && \
-    make tests
+    make test
   displayName: 'Testing'
