@@ -4,12 +4,13 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-isort = "*"
 advbumpversion = "*"
-pylint = "*"
 bandit = "*"
 black = ">=19.*"
+isort = "*"
+pylint = "*"
 pytest = "*"
+pytest-cov = "*"
 
 [packages]
 
