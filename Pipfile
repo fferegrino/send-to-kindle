@@ -11,8 +11,12 @@ isort = "*"
 pylint = "*"
 pytest = "*"
 pytest-cov = "*"
+requests-mock = "*"
 
 [packages]
+beautifulsoup4 = "*"
+readability-lxml = "*"
+requests = "*"
 
 [requires]
 python_version = "3.6"

@@ -8,7 +8,7 @@ env:
 	$(PIPENV) install --dev
 
 test:
-	$(PIPENV_RUN) pytest --cov=$(SOURCES_FOLDER) tests
+	PYTHONPATH=. $(PIPENV_RUN) pytest --cov=$(SOURCES_FOLDER) tests
 
 format:
 	$(PIPENV_RUN) isort -rc $(SOURCES_FOLDER)
