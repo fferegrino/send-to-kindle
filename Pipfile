@@ -1,0 +1,18 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+advbumpversion = "*"
+bandit = "*"
+black = ">=19.*"
+isort = "*"
+pylint = "*"
+pytest = "*"
+pytest-cov = "*"
+
+[packages]
+
+[requires]
+python_version = "3.6"
