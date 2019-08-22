@@ -29,5 +29,10 @@ steps:
 
 - script: |
     export PATH=$HOME/.local/bin:$PATH && \
-    make test
-  displayName: 'Testing'
+    make unit_test
+  displayName: 'Unit testing'
+
+- script: |
+    export PATH=$HOME/.local/bin:$PATH && \
+    make integration_test
+  displayName: 'Integration testing'

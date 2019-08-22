@@ -7,8 +7,11 @@ SOURCE_FILES=$(shell find . -name *.py -not -path **/.venv/*)
 env:
 	$(PIPENV) install --dev
 
-test:
-	PYTHONPATH=. $(PIPENV_RUN) pytest --cov=$(SOURCES_FOLDER) tests
+unit_test:
+	PYTHONPATH=. $(PIPENV_RUN) pytest -vvv --cov=$(SOURCES_FOLDER) --cov-report=html tests/unit
+
+integration_test:
+	PYTHONPATH=. $(PIPENV_RUN) pytest -vvv --cov=$(SOURCES_FOLDER) --cov-report=html tests/integration
 
 format:
 	$(PIPENV_RUN) isort -rc $(SOURCES_FOLDER)
