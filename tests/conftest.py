@@ -1,6 +1,7 @@
 import pytest
 from pathlib import Path
 
+
 @pytest.fixture(scope="session")
 def get_file_content(pytestconfig):
     def inner(file):

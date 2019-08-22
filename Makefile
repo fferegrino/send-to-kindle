@@ -2,7 +2,7 @@ PIPENV=PIPENV_VENV_IN_PROJECT=1 pipenv
 PIPENV_RUN=$(PIPENV) run
 SOURCES_FOLDER=./send_to_kindle
 
-SOURCE_FILES=$(shell find . -name *.py -not -path **/.venv/*)
+SOURCE_FILES=$(shell find . -name '*.py' -not -path **/.venv/*)
 
 env:
 	$(PIPENV) install --dev

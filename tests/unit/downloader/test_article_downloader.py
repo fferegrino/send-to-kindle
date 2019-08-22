@@ -12,20 +12,22 @@ def medium_url():
     return "https://medium.com/@antonio.feregrino/lorem-ipsum-cb19745555ea"
 
 
-
-@pytest.mark.parametrize(['input', 'expected'], [
-    ("html/medium.html", "html/medium-article.html"),
-    ("html/medium_subtitled.html", "html/medium_subtitled-article.html")
-])
+@pytest.mark.parametrize(
+    ["input", "expected"],
+    [
+        ("html/medium.html", "html/medium-article.html"),
+        ("html/medium_subtitled.html", "html/medium_subtitled-article.html"),
+    ],
+)
 def test_extract_content(get_file_content, input, expected):
     content = get_file_content(input)
     original_soup = BeautifulSoup(content)
 
     content_article = get_file_content(expected)
-    article_soup = BeautifulSoup(content_article, 'lxml')
+    article_soup = BeautifulSoup(content_article, "lxml")
 
     result = extract_content(original_soup)
-    assert result == article_soup.find('article').prettify().strip()
+    assert result == article_soup.find("article").prettify().strip()
 
 
 def test_get_article(get_file_content, medium_url):
