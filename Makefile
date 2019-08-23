@@ -21,7 +21,7 @@ env:
 	$(PIPENV) install --dev
 
 unit_test:
-	PYTHONPATH=. $(PIPENV_RUN) pytest -vvv --cov=$(SOURCES_FOLDER) --cov-report=html tests/unit
+	PYTHONPATH=. $(PIPENV_RUN) pytest -vvv --cov=$(SOURCES_FOLDER) --cov-fail-under=90 --cov-report=html tests/unit
 
 integration_test:
 	PYTHONPATH=. $(PIPENV_RUN) pytest -vvv --cov=$(SOURCES_FOLDER) --cov-report=html tests/integration
