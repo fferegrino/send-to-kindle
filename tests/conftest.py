@@ -1,5 +1,6 @@
 import pytest
 from pathlib import Path
+from bs4 import BeautifulSoup
 
 
 @pytest.fixture(scope="session")
@@ -10,3 +11,12 @@ def get_file_content(pytestconfig):
             return readable.read()
 
     return inner
+
+
+@pytest.fixture(scope="session")
+def get_soup(get_file_content):
+    def inner(file):
+        content = get_file_content(file)
+        return BeautifulSoup(content, "lxml")
+    return inner
+

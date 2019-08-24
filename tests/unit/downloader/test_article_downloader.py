@@ -1,5 +1,5 @@
 from send_to_kindle.downloader import get_article
-from send_to_kindle.downloader.article_downloader import extract_content
+from send_to_kindle.downloader.article_downloader import extract_content, load_template
 import pytest
 from pathlib import Path
 from bs4 import BeautifulSoup
@@ -19,15 +19,13 @@ def medium_url():
         ("html/medium_subtitled.html", "html/medium_subtitled-article.html"),
     ],
 )
-def test_extract_content(get_file_content, input, expected):
-    content = get_file_content(input)
-    original_soup = BeautifulSoup(content)
-
-    content_article = get_file_content(expected)
-    article_soup = BeautifulSoup(content_article, "lxml")
+def test_extract_content(get_soup, input, expected):
+    original_soup = get_soup(input)
+    article_soup = get_soup(expected)
 
     result = extract_content(original_soup)
-    assert result == article_soup.find("article").prettify().strip()
+    stringified_result = result.prettify().strip()
+    assert stringified_result == article_soup.find("article").prettify().strip()
 
 
 def test_get_article(get_file_content, medium_url):
