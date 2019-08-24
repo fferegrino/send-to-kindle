@@ -45,4 +45,36 @@ endif
 ifeq ($(OSFLAG),LINUX)
 	wget -O kindlegen.tar.gz http://kindlegen.s3.amazonaws.com/kindlegen_linux_2.6_i386_v2_9.tar.gz
 endif
-	
+
+dists: requirements sdist bdist wheels
+
+requirements:
+	pipenv run pipenv_to_requirements -f
+
+sdist: requirements
+	pipenv run python setup.py sdist
+
+bdist: requirements
+	pipenv run python setup.py bdist
+
+wheels: requirements
+	pipenv run python setup.py bdist_wheel
+
+clean: clean-py clean-build clean-kindlegen
+
+clean-py: 
+	find . -name '*.pyc' -exec rm -f {} +
+	find . -name '*.pyo' -exec rm -f {} +
+	find . -name '*~' -exec rm -f {} +
+	find . -name '__pycache__' -exec rm -fr {} +
+
+clean-build: 
+	rm -fr dist/
+	rm -fr .eggs/
+	rm -f requirements*.txt
+	find . -name '*.egg-info' -exec rm -fr {} +
+	find . -name '*.egg' -exec rm -f {} +
+
+clean-kindlegen:
+	rm -fr kindlegen/
+	rm kindlegen.zip
