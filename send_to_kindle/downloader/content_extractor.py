@@ -24,8 +24,7 @@ class MediumExtractor(ContentExtractor):
                 figure.replace_with(tag)
             else:
                 figure.extract()
-
-        return article.prettify().strip()
+        return article
 
     def _find_interesting_figure(self, figure):
         if figure.find("iframe"):

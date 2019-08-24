@@ -17,4 +17,4 @@ def test_get_article(get_file_content):
     )
 
     assert article.title == expected_title
-    assert article.content == expected_content
+    assert article.content.prettify().strip() == expected_content
