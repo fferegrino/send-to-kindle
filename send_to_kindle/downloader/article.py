@@ -13,8 +13,7 @@ class Article:
     def content(self, value):
         self._content = value
 
-
     def to_html(self):
-        self.template.find('title').string = self.title
+        self.template.find("title").string = self.title
         self.template.body.insert(0, self.content)
         return self.template

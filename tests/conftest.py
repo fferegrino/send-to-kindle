@@ -18,5 +18,5 @@ def get_soup(get_file_content):
     def inner(file):
         content = get_file_content(file)
         return BeautifulSoup(content, "lxml")
-    return inner
 
+    return inner
