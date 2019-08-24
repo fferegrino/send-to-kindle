@@ -5,41 +5,6 @@ from pathlib import Path
 import pytest
 
 
-@pytest.fixture
-def from_email():
-    return "from@mail.com"
-
-
-@pytest.fixture
-def to_email():
-    return "to@mail.com"
-
-
-@pytest.fixture
-def subject():
-    return "subject"
-
-
-@pytest.fixture
-def password():
-    return "password"
-
-
-@pytest.fixture
-def host():
-    return "localhost"
-
-
-@pytest.fixture
-def port():
-    return 1234
-
-
-@pytest.fixture
-def attachment_path():
-    return Path("/fakepath")
-
-
 def test_prepare_attachment(attachment_path):
     sender = EmailSender(None, None, None, 0)
     data = b"Some data"

@@ -15,6 +15,7 @@ requests-mock = "*"
 
 [packages]
 beautifulsoup4 = "*"
+click = "*"
 readability-lxml = "*"
 requests = "*"
 
