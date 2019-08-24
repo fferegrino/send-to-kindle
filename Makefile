@@ -62,6 +62,18 @@ wheels: requirements
 
 clean: clean-py clean-build clean-kindlegen
 
+patch:
+	pipenv run bumpversion patch --verbose
+	git push --follow-tags
+
+minor:
+	pipenv run bumpversion minor --verbose
+	git push --follow-tags
+
+major:
+	pipenv run bumpversion major --verbose
+	git push --follow-tags
+
 clean-py: 
 	find . -name '*.pyc' -exec rm -f {} +
 	find . -name '*.pyo' -exec rm -f {} +
