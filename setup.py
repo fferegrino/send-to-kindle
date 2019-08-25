@@ -9,8 +9,8 @@ packages = find_packages(where=root_dir, exclude=["tests*"])
 VERSION = "0.0.0"
 
 
-def list_requirements(filename):
-    return [line.strip() for line in open(filename)]
+def list_requirements(file_name):
+    return [line.strip() for line in open(file_name)]
 
 
 with open("README.md", "r") as readable:
@@ -25,6 +25,7 @@ setup(
     description="Send web articles to your kindle!",
     long_description=long_description,
     long_description_content_type="text/markdown",
+    url="https://github.com/fferegrino/send-to-kindle",
     install_requires=list_requirements(requirements),
     tests_require=list_requirements(requirements_dev),
     entry_points="""
