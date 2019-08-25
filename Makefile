@@ -20,7 +20,7 @@ else
 endif
 
 check_on_master:
-ifeq ($(BRANCH),packaging)
+ifeq ($(BRANCH),master)
 	echo "You are good to go!"
 else
 	$(error You are not in the master branch)
@@ -75,11 +75,11 @@ patch: check_on_master
 
 minor: check_on_master
 	pipenv run bumpversion minor --verbose
-#	git push --follow-tags
+	git push --follow-tags
 
 major: check_on_master
 	pipenv run bumpversion major --verbose
-#	git push --follow-tags
+	git push --follow-tags
 
 pypi: sdist
 ifeq ($(TAG),)
