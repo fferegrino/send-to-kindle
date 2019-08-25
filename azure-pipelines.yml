@@ -3,9 +3,6 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-trigger:
-- master
-
 pool:
   vmImage: 'ubuntu-latest'
 
@@ -36,3 +33,11 @@ steps:
     export PATH=$HOME/.local/bin:$PATH && \
     make integration_test
   displayName: 'Integration testing'
+
+- script: |
+    export PATH=$HOME/.local/bin:$PATH
+    echo "[pypi]" >> ~/.pypirc
+    echo "username = io_exception" >> ~/.pypirc
+    echo "password = $(PYPI_PASSWORD)" >> ~/.pypirc
+    make pypi
+  displayName: 'Building package'

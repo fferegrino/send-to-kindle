@@ -8,10 +8,12 @@ advbumpversion = "*"
 bandit = "*"
 black = ">=19.*"
 isort = "*"
+pipenv-to-requirements = "*"
 pylint = "*"
 pytest = "*"
 pytest-cov = "*"
 requests-mock = "*"
+twine = "*"
 
 [packages]
 beautifulsoup4 = "*"
