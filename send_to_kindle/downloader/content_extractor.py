@@ -1,6 +1,22 @@
+import copy
+
 class ContentExtractor:
     def extract(self, soup):
-        return str(soup)
+        return soup
+
+    def get_replace_images(self, soup):
+        new_soup = copy.copy(soup)
+        img_map = dict()
+        imgs = new_soup.find_all('img')
+        i = 0
+        for img in imgs:
+            src = img.get('src')
+            if src: 
+                new_id = str(i)
+                img_map[new_id] = src
+                img["src"]= new_id
+                i = i + 1
+        return new_soup, img_map
 
 
 class MediumExtractor(ContentExtractor):
