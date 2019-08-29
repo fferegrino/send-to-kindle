@@ -4,7 +4,7 @@ SOURCES_FOLDER=./send_to_kindle
 SOURCE_FILES=$(shell find . -name '*.py' -not -path **/.venv/*)
 BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
 HASH := $(shell git rev-parse HEAD)
-TAG := $(shell git describe --tags --abbrev=0)
+TAG := $(shell git tag -l --contains HEAD)
 
 OSFLAG 				:=
 ifeq ($(OS),Windows_NT)
