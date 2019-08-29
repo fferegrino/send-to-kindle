@@ -1,21 +1,22 @@
-import copy
+import hashlib
+
+from bs4 import BeautifulSoup
+
 
 class ContentExtractor:
     def extract(self, soup):
         return soup
 
-    def get_replace_images(self, soup):
-        new_soup = copy.copy(soup)
+    def replace_images(self, soup):
+        new_soup = BeautifulSoup(str(soup), "lxml").find("article")
         img_map = dict()
-        imgs = new_soup.find_all('img')
-        i = 0
+        imgs = new_soup.find_all("img")
         for img in imgs:
-            src = img.get('src')
-            if src: 
-                new_id = str(i)
+            src = img.get("src")
+            if src:
+                new_id = hashlib.md5(src.encode("utf8")).hexdigest()  # nosec
                 img_map[new_id] = src
-                img["src"]= new_id
-                i = i + 1
+                img["src"] = new_id
         return new_soup, img_map
 
 

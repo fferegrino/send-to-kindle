@@ -31,24 +31,22 @@ def test_extract_content(get_soup, input, expected):
 
 @pytest.mark.parametrize(
     ["input", "expected"],
-    [
-        ("html/article-images.html", "html/article-images-replaced.html"),
-    ],
+    [("html/article-images.html", "html/article-images-replaced.html")],
 )
 def test_get_replace_images(get_soup, input, expected):
     original_soup = get_soup(input)
     article_soup = get_soup(expected)
 
-    epxected_replacements= {
-        "0": "https://miro.medium.com/max/1400/1*cff9OedFe861WaCwUiD76g.jpeg",
-        "1": "https://i.imgur.com/a8BTZ25.png",
+    epxected_replacements = {
+        "4aa727af33567fe99b76b5a299d23df5": "https://miro.medium.com/max/1400/1*cff9OedFe861WaCwUiD76g.jpeg",
+        "17b890c5e7ca026ac45f7edb37a7783e": "https://i.imgur.com/a8BTZ25.png",
     }
 
-    e = ContentExtractor()
-    soup, replacements = e.get_replace_images(original_soup)
+    extractor = ContentExtractor()
+    soup, replacements = extractor.replace_images(original_soup)
     assert replacements == epxected_replacements
-    assert soup.find("article").prettify().strip() == article_soup.find("article").prettify().strip()
-    assert soup.find("article").prettify().strip() != original_soup.find("article").prettify().strip()
+    assert soup.prettify().strip() == article_soup.find("article").prettify().strip()
+    assert soup.prettify().strip() != original_soup.find("article").prettify().strip()
 
 
 def test_get_article(get_file_content, medium_url):
@@ -58,8 +56,13 @@ def test_get_article(get_file_content, medium_url):
         with patch(
             "send_to_kindle.downloader.article_downloader.extract_content",
             return_value="the_content",
-        ):
+        ), patch(
+            "send_to_kindle.downloader.article_downloader.extract_images",
+            return_value=("the_content", {"k": "v"}),
+        ) as extract_images_mock:
             article = get_article(medium_url)
 
+            extract_images_mock.assert_called_once_with("the_content")
             assert article.title == "Lorem Ipsum - Antonio Feregrino - Medium"
             assert article.content == "the_content"
+            assert article.image_map == {"k": "v"}
