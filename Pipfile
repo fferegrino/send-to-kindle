@@ -18,6 +18,7 @@ twine = "*"
 [packages]
 beautifulsoup4 = "*"
 click = "*"
+pillow = "*"
 readability-lxml = "*"
 requests = "*"
 

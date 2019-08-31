@@ -38,8 +38,8 @@ def test_get_replace_images(get_soup, input, expected):
     article_soup = get_soup(expected)
 
     epxected_replacements = {
-        "4aa727af33567fe99b76b5a299d23df5": "https://miro.medium.com/max/1400/1*cff9OedFe861WaCwUiD76g.jpeg",
-        "17b890c5e7ca026ac45f7edb37a7783e": "https://i.imgur.com/a8BTZ25.png",
+        "4aa727af33567fe99b76b5a299d23df5.jpg": "https://miro.medium.com/max/1400/1*cff9OedFe861WaCwUiD76g.jpeg",
+        "17b890c5e7ca026ac45f7edb37a7783e.jpg": "https://i.imgur.com/a8BTZ25.png",
     }
 
     extractor = ContentExtractor()

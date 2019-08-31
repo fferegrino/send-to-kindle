@@ -2,6 +2,8 @@ import hashlib
 
 from bs4 import BeautifulSoup
 
+IMAGE_EXTENSION = "jpg"
+
 
 class ContentExtractor:
     def extract(self, soup):
@@ -15,6 +17,7 @@ class ContentExtractor:
             src = img.get("src")
             if src:
                 new_id = hashlib.md5(src.encode("utf8")).hexdigest()  # nosec
+                new_id = f"{new_id}.{IMAGE_EXTENSION}"
                 img_map[new_id] = src
                 img["src"] = new_id
         return new_soup, img_map
