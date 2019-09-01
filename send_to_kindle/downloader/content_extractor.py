@@ -1,6 +1,26 @@
+import hashlib
+
+from bs4 import BeautifulSoup
+
+IMAGE_EXTENSION = "jpg"
+
+
 class ContentExtractor:
     def extract(self, soup):
-        return str(soup)
+        return soup
+
+    def replace_images(self, soup):
+        new_soup = BeautifulSoup(str(soup), "lxml").find("article")
+        img_map = dict()
+        imgs = new_soup.find_all("img")
+        for img in imgs:
+            src = img.get("src")
+            if src:
+                new_id = hashlib.md5(src.encode("utf8")).hexdigest()  # nosec
+                new_id = f"{new_id}.{IMAGE_EXTENSION}"
+                img_map[new_id] = src
+                img["src"] = new_id
+        return new_soup, img_map
 
 
 class MediumExtractor(ContentExtractor):

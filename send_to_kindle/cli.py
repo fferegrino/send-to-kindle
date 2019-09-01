@@ -6,7 +6,7 @@ from pathlib import Path
 import click
 
 from send_to_kindle.converter import html_to_mobi
-from send_to_kindle.downloader import get_article
+from send_to_kindle.downloader import download_images, get_article
 from send_to_kindle.sender.email_sender import EmailSender
 
 
@@ -52,6 +52,7 @@ def download(url, config):
 
     article = get_article(url)
     with write_temp_html(article.to_html().prettify()) as html:
+        download_images(html.parent, article.image_map)
         mobi_file = html_to_mobi(kindlegen_path, html, article.title)
 
     sender = EmailSender(from_email, password, host, port)

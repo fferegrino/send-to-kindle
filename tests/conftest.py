@@ -40,9 +40,9 @@ def attachment_path():
 
 @pytest.fixture(scope="session")
 def get_file_content(pytestconfig):
-    def inner(file):
+    def inner(file, mode="r"):
         file_path = Path(pytestconfig.rootdir, "tests", file)
-        with open(file_path, "r") as readable:
+        with open(file_path, mode) as readable:
             return readable.read()
 
     return inner

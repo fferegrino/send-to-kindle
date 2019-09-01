@@ -1,8 +1,8 @@
 from click.testing import CliRunner
 from unittest.mock import patch, MagicMock
 from send_to_kindle.cli import download, get_config_path
-from pathlib import Path
 import pytest
+from pathlib import Path
 
 
 @pytest.fixture
@@ -21,9 +21,11 @@ def config(from_email, password, to_email, host, port):
 @patch("send_to_kindle.cli.get_article")
 @patch("send_to_kindle.cli.html_to_mobi")
 @patch("send_to_kindle.cli.write_temp_html")
+@patch("send_to_kindle.cli.download_images")
 @patch("send_to_kindle.cli.EmailSender.send_mail")
 def test_download(
     send_mail_mock,
+    download_images_mock,
     write_temp_html_mock,
     html_to_mobi_mock,
     get_article_mock,
@@ -44,6 +46,7 @@ def test_download(
         send_mail_mock.assert_called_once_with(article_title, to_email, attachment_path)
         get_article_mock.assert_called_once_with(url)
         html_to_mobi_mock.assert_called_once()
+        download_images_mock.assert_called_once()
 
 
 def test_get_config_path_file_exists(tmp_path):
