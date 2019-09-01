@@ -1,8 +1,8 @@
 from click.testing import CliRunner
 from unittest.mock import patch, MagicMock
 from send_to_kindle.cli import download, get_config_path
-from pathlib import Path
 import pytest
+from pathlib import Path
 
 
 @pytest.fixture
