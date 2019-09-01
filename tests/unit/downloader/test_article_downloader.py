@@ -3,9 +3,12 @@ from send_to_kindle.downloader.article_downloader import extract_content, load_t
 import pytest
 from pathlib import Path
 from bs4 import BeautifulSoup
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 import requests_mock
-from send_to_kindle.downloader.content_extractor import ContentExtractor
+from send_to_kindle.downloader.content_extractor import (
+    ContentExtractor,
+    MediumExtractor,
+)
 
 
 @pytest.fixture
@@ -20,11 +23,11 @@ def medium_url():
         ("html/medium_subtitled.html", "html/medium_subtitled-article.html"),
     ],
 )
-def test_extract_content(get_soup, input, expected):
+def test_extract_medium_content(get_soup, input, expected):
     original_soup = get_soup(input)
     article_soup = get_soup(expected)
-
-    result = extract_content(original_soup)
+    extractor = MediumExtractor()
+    result = extract_content(extractor, original_soup)
     stringified_result = result.prettify().strip()
     assert stringified_result == article_soup.find("article").prettify().strip()
 
@@ -51,6 +54,7 @@ def test_get_replace_images(get_soup, input, expected):
 
 def test_get_article(get_file_content, medium_url):
     content = get_file_content("html/medium.html")
+    extractor = MagicMock()
     with requests_mock.mock() as mocked_requests:
         mocked_requests.get(medium_url, text=content)
         with patch(
@@ -59,10 +63,14 @@ def test_get_article(get_file_content, medium_url):
         ), patch(
             "send_to_kindle.downloader.article_downloader.extract_images",
             return_value=("the_content", {"k": "v"}),
-        ) as extract_images_mock:
+        ) as extract_images_mock, patch(
+            "send_to_kindle.downloader.article_downloader.get_extractor",
+            return_value=extractor,
+        ) as get_extractor_mock:
             article = get_article(medium_url)
 
-            extract_images_mock.assert_called_once_with("the_content")
+            extract_images_mock.assert_called_once_with(extractor, "the_content")
+            get_extractor_mock.assert_called_once()
             assert article.title == "Lorem Ipsum - Antonio Feregrino - Medium"
             assert article.content == "the_content"
             assert article.image_map == {"k": "v"}
