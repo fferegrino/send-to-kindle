@@ -28,9 +28,11 @@ def get_config(config_file):
 
 
 @contextmanager
-def write_temp_html(html):
+def write_temp_html(html, folder=None, delete=True):
     try:
-        temp_html = tempfile.NamedTemporaryFile(suffix=".html", mode="w")
+        temp_html = tempfile.NamedTemporaryFile(
+            suffix=".html", mode="w", dir=folder, delete=delete
+        )
         temp_html.write(html)
         temp_html.flush()
         yield Path(temp_html.name)
@@ -41,7 +43,11 @@ def write_temp_html(html):
 @click.command()
 @click.argument("url")
 @click.option("--config", type=click.Path(exists=True, dir_okay=False), default=None)
-def download(url, config):
+@click.option(
+    "--output", "-o", type=click.Path(exists=True, file_okay=False), default=None
+)
+@click.option("--keep", "-k", type=click.BOOL, default=False)
+def download(url, config, output, keep):
     configuration = get_config(config)
     from_email = configuration.get("mail_account", "from")
     password = configuration.get("mail_account", "password")
@@ -51,7 +57,9 @@ def download(url, config):
     kindlegen_path = Path(configuration.get("kindlegen", "path"))
 
     article = get_article(url)
-    with write_temp_html(article.to_html().prettify()) as html:
+    with write_temp_html(
+        article.to_html().prettify(), folder=output, delete=not keep
+    ) as html:
         download_images(html.parent, article.image_map)
         mobi_file = html_to_mobi(kindlegen_path, html, article.title)
 

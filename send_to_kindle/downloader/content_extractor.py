@@ -23,6 +23,24 @@ class ContentExtractor:
         return new_soup, img_map
 
 
+class DevToExtractor(ContentExtractor):
+    def extract(self, soup):
+        article = soup.find("article")
+        article_actions = article.find("div", {"class": "article-actions"})
+        article_actions.extract()
+
+        title = article.find("header", {"class": "title"})
+        h3 = title.find("h3")
+        if h3:
+            [anchor.extract() for anchor in h3.find_all("a", recursive=False)]
+
+        html_variant_wrapper = article.find("div", {"class": "html-variant-wrapper"})
+        if html_variant_wrapper:
+            html_variant_wrapper.extract()
+
+        return article
+
+
 class MediumExtractor(ContentExtractor):
 
     exclude_for_tag = {"img": {"src", "alt"}}
