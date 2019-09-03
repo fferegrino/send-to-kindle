@@ -8,6 +8,7 @@ import requests_mock
 from send_to_kindle.downloader.content_extractor import (
     ContentExtractor,
     MediumExtractor,
+    DevToExtractor,
 )
 
 
@@ -17,16 +18,21 @@ def medium_url():
 
 
 @pytest.mark.parametrize(
-    ["input", "expected"],
+    ["input", "expected", "extractor"],
     [
-        ("html/medium.html", "html/medium-article.html"),
-        ("html/medium_subtitled.html", "html/medium_subtitled-article.html"),
+        ("html/medium.html", "html/medium-article.html", MediumExtractor),
+        (
+            "html/medium_subtitled.html",
+            "html/medium_subtitled-article.html",
+            MediumExtractor,
+        ),
+        ("html/devto.html", "html/devto-article.html", DevToExtractor),
     ],
 )
-def test_extract_medium_content(get_soup, input, expected):
+def test_extractor(get_soup, input, expected, extractor):
     original_soup = get_soup(input)
     article_soup = get_soup(expected)
-    extractor = MediumExtractor()
+    extractor = extractor()
     result = extract_content(extractor, original_soup)
     stringified_result = result.prettify().strip()
     assert stringified_result == article_soup.find("article").prettify().strip()

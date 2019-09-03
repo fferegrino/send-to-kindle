@@ -57,6 +57,8 @@ def download(url, config, output, keep):
     kindlegen_path = Path(configuration.get("kindlegen", "path"))
 
     article = get_article(url)
+
+    # pylint: disable=bad-continuation
     with write_temp_html(
         article.to_html().prettify(), folder=output, delete=not keep
     ) as html:

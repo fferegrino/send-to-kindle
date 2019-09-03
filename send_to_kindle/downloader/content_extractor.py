@@ -30,9 +30,9 @@ class DevToExtractor(ContentExtractor):
         article_actions.extract()
 
         title = article.find("header", {"class": "title"})
-        h3 = title.find("h3")
-        if h3:
-            [anchor.extract() for anchor in h3.find_all("a", recursive=False)]
+        h3s = title.find("h3")
+        if h3s:
+            _ = [anchor.extract() for anchor in h3s.find_all("a", recursive=False)]
 
         html_variant_wrapper = article.find("div", {"class": "html-variant-wrapper"})
         if html_variant_wrapper:
