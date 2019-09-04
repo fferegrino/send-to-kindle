@@ -40,6 +40,7 @@ def write_temp_html(html, folder=None, delete=True):
         temp_html.close()
 
 
+# pylint: disable=too-many-locals,too-many-arguments
 @click.command()
 @click.argument("url")
 @click.option("--config", type=click.Path(exists=True, dir_okay=False), default=None)

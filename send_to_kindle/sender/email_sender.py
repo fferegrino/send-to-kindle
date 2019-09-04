@@ -4,6 +4,8 @@ from email.mime.multipart import MIMEBase, MIMEMultipart
 
 
 class EmailSender:
+
+    # pylint: disable=too-many-locals,too-many-arguments
     def __init__(self, from_email, password, host, port, use_tls):
         self.from_email = from_email
         self.password = password
