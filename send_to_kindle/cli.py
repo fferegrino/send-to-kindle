@@ -54,6 +54,7 @@ def download(url, config, output, keep):
     to_email = configuration.get("mail_account", "to")
     host = configuration.get("mail_server", "host")
     port = configuration.getint("mail_server", "port")
+    use_tls = configuration.getboolean("mail_server", "use_tls", default=True)
     kindlegen_path = Path(configuration.get("kindlegen", "path"))
 
     article = get_article(url)
@@ -65,7 +66,7 @@ def download(url, config, output, keep):
         download_images(html.parent, article.image_map)
         mobi_file = html_to_mobi(kindlegen_path, html, article.title)
 
-    sender = EmailSender(from_email, password, host, port)
+    sender = EmailSender(from_email, password, host, port, use_tls)
     sender.send_mail(article.title, to_email, mobi_file)
 
 
