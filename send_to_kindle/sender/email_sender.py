@@ -4,11 +4,14 @@ from email.mime.multipart import MIMEBase, MIMEMultipart
 
 
 class EmailSender:
-    def __init__(self, from_email, password, host, port):
+
+    # pylint: disable=too-many-locals,too-many-arguments
+    def __init__(self, from_email, password, host, port, use_tls):
         self.from_email = from_email
         self.password = password
         self.port = port
         self.host = host
+        self.use_tls = use_tls
 
     def prepare_attachment(self, attachment_path):
         attachment = MIMEBase("application", "octet-stream")
@@ -31,5 +34,7 @@ class EmailSender:
         part = self.prepare_attachment(attachment_path)
         msg.attach(part)
         with smtplib.SMTP(self.host, self.port) as server:
+            if self.use_tls:
+                server.starttls()
             server.login(self.from_email, self.password)
             server.sendmail(self.from_email, to_email, msg.as_string())

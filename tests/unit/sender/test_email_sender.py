@@ -6,7 +6,7 @@ import pytest
 
 
 def test_prepare_attachment(attachment_path):
-    sender = EmailSender(None, None, None, 0)
+    sender = EmailSender(None, None, None, 0, True)
     data = b"Some data"
     with patch("builtins.open", mock_open(read_data=data)):
         with patch(
@@ -22,7 +22,7 @@ def test_prepare_attachment(attachment_path):
 
 
 def test_prepare_message(from_email, subject, to_email):
-    sender = EmailSender(from_email, None, None, 0)
+    sender = EmailSender(from_email, None, None, 0, True)
 
     calls = [call("Subject", subject), call("To", to_email), call("From", from_email)]
     with patch("send_to_kindle.sender.email_sender.MIMEMultipart", spec=MIMEMultipart):
@@ -33,6 +33,7 @@ def test_prepare_message(from_email, subject, to_email):
 @patch("send_to_kindle.sender.email_sender.EmailSender.prepare_message")
 @patch("send_to_kindle.sender.email_sender.EmailSender.prepare_attachment")
 @patch("send_to_kindle.sender.email_sender.smtplib.SMTP")
+@pytest.mark.parametrize(["use_tls"], [([True]), ([False])])
 def test_send_mail(
     smtp_mock,
     prepare_attachment_mock,
@@ -44,13 +45,14 @@ def test_send_mail(
     subject,
     to_email,
     attachment_path,
+    use_tls,
 ):
     message = MagicMock()
     message_str = "Message"
     message.as_string.return_value = message_str
     attachment = MagicMock()
 
-    sender = EmailSender(from_email, password, host, port)
+    sender = EmailSender(from_email, password, host, port, use_tls)
 
     smtp = MagicMock()
     smtp_mock.return_value.__enter__.return_value = smtp
@@ -61,4 +63,8 @@ def test_send_mail(
 
     message.attach.assert_called_once_with(attachment)
     smtp.login.assert_called_once_with(from_email, password)
+    if use_tls:
+        smtp.starttls.assert_called_once()
+    else:
+        smtp.starttls.assert_not_called()
     smtp.sendmail.assert_called_once_with(from_email, to_email, message_str)
