@@ -8,8 +8,13 @@ import requests_mock
 
 
 def test_get_article(get_file_content):
-    content = get_file_content("html/integration-medium.html")
-    expected_content = BeautifulSoup(content, "lxml").find("article").prettify().strip()
+    possible_articles = ["integration-medium_0", "integration-medium_1"]
+    contents = [get_file_content(f"html/{poss}.html") for poss in possible_articles]
+
+    expected_contents = [
+        BeautifulSoup(content, "lxml").find("article").prettify().strip()
+        for content in contents
+    ]
     expected_title = "In a World of Smart Gadgets, Why Are Toilets Still so Dumb?"
 
     article = get_article(
@@ -21,6 +26,11 @@ def test_get_article(get_file_content):
         "3a699d7429177a7527ebe87fcd02ccbd.jpg": "https://miro.medium.com/max/2474/0*hZF4uuaYanSxmANz",
         "0672e5fb666089c1f3a93ae2ebb418d9.jpg": "https://miro.medium.com/max/3200/0*0rNhFlTZp6Ra-uRR",
     }
-    assert article.content.prettify().strip() == expected_content
+    assert any(
+        [
+            article.content.prettify().strip() == expected_content
+            for expected_content in expected_contents
+        ]
+    )
     assert article.title == expected_title
     assert article.image_map == images

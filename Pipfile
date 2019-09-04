@@ -21,6 +21,7 @@ click = "*"
 pillow = "*"
 readability-lxml = "*"
 requests = "*"
+tldextract = "*"
 
 [requires]
 python_version = "3.6"
