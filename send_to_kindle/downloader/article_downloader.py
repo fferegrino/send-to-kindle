@@ -1,7 +1,7 @@
 from pathlib import Path
-from urllib.parse import urlparse
 
 import requests
+import tldextract
 from bs4 import BeautifulSoup
 
 from send_to_kindle.downloader.article import Article
@@ -38,12 +38,13 @@ def extract_images(content_extractor, article_soup):
 
 
 def get_article(url):
-    url_parsed = urlparse(url)
+    tld_extractor = tldextract.TLDExtract(suffix_list_urls=None)
+    url_parsed = tld_extractor(url)
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "lxml")
     template = load_template()
     article = Article(url=url, title=soup.title.text.strip(), template=template)
-    extractor = get_extractor(url_parsed.hostname)
+    extractor = get_extractor(f"{url_parsed.domain}.{url_parsed.suffix}")
     soup = extract_content(extractor, soup)
     content, img_map = extract_images(extractor, soup)
     article.content = content
