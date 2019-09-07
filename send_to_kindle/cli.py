@@ -55,7 +55,10 @@ def download(url, config, output, keep):
     to_email = configuration.get("mail_account", "to")
     host = configuration.get("mail_server", "host")
     port = configuration.getint("mail_server", "port")
-    use_tls = configuration.getboolean("mail_server", "use_tls", default=True)
+    try:
+        use_tls = configuration.getboolean("mail_server", "use_tls")
+    except configparser.NoOptionError:
+        use_tls = True
     kindlegen_path = Path(configuration.get("kindlegen", "path"))
 
     article = get_article(url)
