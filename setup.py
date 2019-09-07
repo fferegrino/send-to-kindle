@@ -9,7 +9,7 @@ requirements = Path(root_dir, "requirements.txt")
 requirements_dev = Path(root_dir, "requirements-dev.txt")
 packages = find_packages(where=root_dir, exclude=["tests*"])
 
-VERSION = "0.3.0"
+VERSION = "0.4.0"
 
 
 class VerifyVersionCommand(install):
