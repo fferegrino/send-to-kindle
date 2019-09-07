@@ -1,6 +1,18 @@
 # send-to-kindle
 
+[![PyPI version](https://badge.fury.io/py/s2kindle.svg)](https://pypi.org/project/s2kindle/) [![Build Status](https://dev.azure.com/antonioferegrino/send-to-kindle/_apis/build/status/fferegrino.send-to-kindle?branchName=master)](https://dev.azure.com/antonioferegrino/send-to-kindle/_build/latest?definitionId=1&branchName=master)
+
 A teeny tiny app that you can use to send stuff to your kindle. 
+
+## Installation  
+
+```shell script
+pip install s2kindle
+``` 
+
+## Requirements
+
+Requires the [KindleGen](https://www.amazon.com/gp/feature.html?ie=UTF8&docId=1000765211) app. Download it and extract it.
 
 ## Usage  
 
@@ -10,9 +22,7 @@ As simple as executing the s2k command with the url that you want to send:
 s2k https://medium.com/@antonio.feregrino/lorem-ipsum-cb19745555ea
 ```
 
-## Requirements
-
-Requires the [KindleGen](https://www.amazon.com/gp/feature.html?ie=UTF8&docId=1000765211) app. Download it and extract it.
+You can specify the configuration file outlined below via the `--config` argument. 
 
 ## Configuration
 
@@ -42,3 +52,4 @@ The `kindlegen` is a path to where the *kindlegen* app has been extracted.
 ## Supported websites  
 
  - Medium
+ - dev.to
