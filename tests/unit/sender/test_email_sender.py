@@ -24,9 +24,9 @@ def test_prepare_attachment(attachment_path):
 def test_prepare_message(from_email, subject, to_email):
     sender = EmailSender(from_email, None, None, 0, True)
 
-    calls = [call("Subject", subject), call("To", to_email), call("From", from_email)]
+    calls = [call("Subject", subject), call("To", [to_email]), call("From", from_email)]
     with patch("send_to_kindle.sender.email_sender.MIMEMultipart", spec=MIMEMultipart):
-        message = sender.prepare_message(subject, to_email)
+        message = sender.prepare_message(subject, [to_email])
         message.__setitem__.assert_has_calls(calls)
 
 
@@ -67,4 +67,17 @@ def test_send_mail(
         smtp.starttls.assert_called_once()
     else:
         smtp.starttls.assert_not_called()
-    smtp.sendmail.assert_called_once_with(from_email, to_email, message_str)
+    smtp.sendmail.assert_called_once_with(from_email, [to_email], message_str)
+
+
+@pytest.mark.parametrize(
+    ["addresses", "expected"],
+    [
+        ("a@mail.com,f@mail.com", ["a@mail.com", "f@mail.com"]),
+        ("a@gmail.com, aaa@bb.com", ["a@gmail.com", "aaa@bb.com"]),
+    ],
+)
+def test_get_addresses(addresses, expected, from_email):
+    sender = EmailSender(from_email, None, None, 0, True)
+    actual = sender.get_addresses(addresses)
+    assert actual == expected
