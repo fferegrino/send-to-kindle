@@ -5,15 +5,11 @@ import tldextract
 from bs4 import BeautifulSoup
 
 from send_to_kindle.downloader.article import Article
-from send_to_kindle.downloader.content_extractor import (
-    ContentExtractor,
-    DevToExtractor,
-    MediumExtractor,
-)
+from send_to_kindle.downloader.content_extractor import DevToExtractor, MediumExtractor
 
 ROOT = Path(__file__).parent.parent.resolve()
 TEMPLATE = Path(ROOT, "assets", "article-template.html")
-DEFAULT_EXTRACTOR = ContentExtractor()
+DEFAULT_EXTRACTOR = MediumExtractor()
 REGISTERED_EXTRACTORS = {"medium.com": MediumExtractor(), "dev.to": DevToExtractor()}
 
 
