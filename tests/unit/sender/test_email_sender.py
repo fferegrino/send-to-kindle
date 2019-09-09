@@ -24,7 +24,7 @@ def test_prepare_attachment(attachment_path):
 def test_prepare_message(from_email, subject, to_email):
     sender = EmailSender(from_email, None, None, 0, True)
 
-    calls = [call("Subject", subject), call("To", [to_email]), call("From", from_email)]
+    calls = [call("Subject", subject), call("To", to_email), call("From", from_email)]
     with patch("send_to_kindle.sender.email_sender.MIMEMultipart", spec=MIMEMultipart):
         message = sender.prepare_message(subject, [to_email])
         message.__setitem__.assert_has_calls(calls)

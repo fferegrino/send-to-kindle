@@ -26,7 +26,7 @@ class EmailSender:
     def prepare_message(self, subject, recipients):
         msg = MIMEMultipart()
         msg["Subject"] = subject
-        msg["To"] = recipients
+        msg["To"] = ",".join(recipients)
         msg["From"] = self.from_email
         return msg
 
